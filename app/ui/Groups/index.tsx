@@ -1,15 +1,20 @@
-"use client";
 import React from "react";
 import CardGroup from "./card";
+import { getGroups } from "@/app/services/group";
+import CreateGroup from "./CreateGroup";
 
-interface Props {}
+const Groups = async () => {
+  const groups = await getGroups();
 
-const Groups = () => {
   return (
-    <div className="flex gap-6">
-      <CardGroup />
-      <CardGroup />
-    </div>
+    <>
+      <CreateGroup />
+      <div className="flex gap-6">
+        {groups.map((g) => (
+          <CardGroup key={g.id} {...g} />
+        ))}
+      </div>
+    </>
   );
 };
 

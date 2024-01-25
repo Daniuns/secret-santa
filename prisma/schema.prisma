@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id        Int      @id @unique @default(autoincrement())
+  name      String?  @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+  groups    Group[]
+}
+
+model Group {
+  id         String      @unique @db.VarChar(255)
+  sorted     Boolean     @default(false)
+  name       String?     @db.VarChar(255)
+  updatedAt  DateTime    @default(now())
+  deletedAt  DateTime    @default(now())
+  ownerId    Int
+  ownerGroup User        @relation(fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userGroup  UserGroup[]
+}
+
+model UserGroup {
+  id        String   @unique @db.VarChar(255)
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+  userEmail String
+  userName  String
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}

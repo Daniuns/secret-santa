@@ -2,10 +2,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+This project was created to better understand and practice NextJS.
+
+I am using using docker to create a postgreSQL database.
+
 First, run the development server:
 
 ```bash
-npm run dev
+docker compose up
 # or
 yarn dev
 # or

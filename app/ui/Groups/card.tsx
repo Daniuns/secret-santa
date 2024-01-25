@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Card,
@@ -5,38 +7,28 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Link,
   Image,
 } from "@nextui-org/react";
+import Link from "next/link";
+import { groupSchema } from "@/app/schemas/groups";
+import { z } from "zod";
+import { format } from "date-fns/fp";
 
-export default function CardGroup() {
+export default function CardGroup({ ...data }: z.infer<typeof groupSchema>) {
   return (
     <Card isPressable className="max-w-[400px]">
       <CardHeader className="flex gap-3">
-        <Image
-          alt="nextui logo"
-          height={40}
-          radius="sm"
-          src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-          width={40}
-        />
         <div className="flex flex-col">
-          <p className="text-md">NextUI</p>
-          <p className="text-small text-default-500">nextui.org</p>
+          <p className="text-md text-left">{data.name}</p>
+          <p className="text-small text-default-500 self-start">
+            Criado em: {format("MMM yyyy", data.updatedAt)}
+          </p>
         </div>
       </CardHeader>
       <Divider />
-      <CardBody>
-        <p>Make beautiful websites regardless of your design experience.</p>
-      </CardBody>
-      <Divider />
       <CardFooter>
-        <Link
-          isExternal
-          showAnchorIcon
-          href="https://github.com/nextui-org/nextui"
-        >
-          Visit source code on GitHub.
+        <Link color="foreground" href={`grupos/${data.id}`}>
+          Acessar
         </Link>
       </CardFooter>
     </Card>
