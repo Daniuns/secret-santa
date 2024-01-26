@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @unique @default(autoincrement())
-  name      String?  @db.VarChar(255)
-  email     String   @unique @db.VarChar(255)
-  updatedAt DateTime @default(now())
-  deletedAt DateTime @default(now())
+  id        Int       @id @unique @default(autoincrement())
+  name      String?   @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
   groups    Group[]
 }
 
@@ -24,18 +24,18 @@ model Group {
   sorted     Boolean     @default(false)
   name       String?     @db.VarChar(255)
   updatedAt  DateTime    @default(now())
-  deletedAt  DateTime    @default(now())
+  deletedAt  DateTime?
   ownerId    Int
   ownerGroup User        @relation(fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userGroup  UserGroup[]
 }
 
 model UserGroup {
-  id        String   @unique @db.VarChar(255)
-  updatedAt DateTime @default(now())
-  deletedAt DateTime @default(now())
+  id        String    @unique @db.VarChar(255)
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
   userEmail String
   userName  String
   groupId   String
-  group     Group    @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  group     Group     @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

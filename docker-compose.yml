@@ -21,6 +21,8 @@ services:
       - postgres
     networks:
       - my_network
+    environment:
+      - PORT=3000
 
 networks:
   my_network:

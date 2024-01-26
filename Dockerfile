@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 3000
 
 # Comando para iniciar o projeto Next.js
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start", "--", "-H", "0.0.0.0", "-p", "3000"]
+
