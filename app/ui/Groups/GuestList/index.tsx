@@ -5,7 +5,7 @@ import { Button, Input, Listbox, ListboxItem } from "@nextui-org/react";
 import { TrashIcon } from "@/public/assets/Icons/TrashIcon";
 import { useFormState } from "react-dom";
 
-export const ListboxWrapper = ({ children }) => (
+export const ListboxWrapper = ({ children }: any) => (
   <div className="w-full max-full border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
     {children}
   </div>
@@ -18,9 +18,9 @@ const GuestList = () => {
     name: string;
     email: string;
   }>();
-  const [guestsList, setGuestsList] = useState([]);
+  const [guestsList, setGuestsList] = useState<any[]>([]);
 
-  const onAddGuest = (event) => {
+  const onAddGuest = () => {
     if (
       !guestToAdd?.name ||
       !guestToAdd?.email ||
