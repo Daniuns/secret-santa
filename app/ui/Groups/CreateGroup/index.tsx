@@ -9,26 +9,38 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import React from "react";
+import React, { useEffect } from "react";
 import Form from "./Form";
 import { useFormState, useFormStatus } from "react-dom";
 import { createGroup } from "@/app/services/group";
-
-interface Props {}
 
 const CreateGroup = () => {
   const initialStateForm = { message: "", errors: {} };
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [state, dispatch] = useFormState(createGroup, initialStateForm);
-  const { pending } = useFormStatus();
+
+  useEffect(() => {
+    if (!state?.errors) {
+      onClose();
+    }
+  }, [state?.errors]);
 
   const onAction = (event: any) => {
     dispatch(event);
-    onClose();
+  };
+
+  const BtnSubmit = () => {
+    const allData = useFormStatus();
+
+    return (
+      <Button disabled={allData.pending} type="submit" color="primary">
+        {!allData.pending ? "Criar" : "Criando..."}
+      </Button>
+    );
   };
 
   return (
-    <div className="mb-12 self-end">
+    <div>
       <Button className="" onPress={onOpen}>
         Criar grupo
       </Button>
@@ -46,9 +58,7 @@ const CreateGroup = () => {
                 <Button color="danger" onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button type="submit" color="primary">
-                  Criar
-                </Button>
+                <BtnSubmit />
               </ModalFooter>
             </form>
           )}

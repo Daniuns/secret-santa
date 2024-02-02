@@ -8,8 +8,11 @@ const Groups = async () => {
 
   return (
     <>
-      <CreateGroup />
-      <div className="flex gap-6">
+      <div className="flex justify-between w-full align-center mb-12">
+        <h1>Meus Grupos</h1>
+        <CreateGroup />
+      </div>
+      <div className="flex gap-6 flex-wrap">
         {groups.map((g) => (
           <CardGroup key={g.id} {...g} />
         ))}

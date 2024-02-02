@@ -16,21 +16,19 @@ import { format } from "date-fns/fp";
 
 export default function CardGroup({ ...data }: z.infer<typeof groupSchema>) {
   return (
-    <Card isPressable className="max-w-[400px]">
-      <CardHeader className="flex gap-3">
-        <div className="flex flex-col">
-          <p className="text-md text-left">{data.name}</p>
+    <Card className="max-w-[400px] min-w-[300px] h-max flex flex-col">
+      <CardHeader className="flex gap-3 overflow-hidden">
+        <div className="flex flex-col flex-1 min-h-[62px] justify-between">
+          <p className="text-md text-left line-clamp-2">{data.name}</p>
           <p className="text-small text-default-500 self-start">
             Criado em: {format("MMM yyyy", data.updatedAt)}
           </p>
         </div>
       </CardHeader>
       <Divider />
-      <CardFooter>
-        <Link color="foreground" href={`grupos/${data.id}`}>
-          Acessar
-        </Link>
-      </CardFooter>
+      <Link color="foreground" href={`grupos/${data.id}`}>
+        <CardFooter>Acessar</CardFooter>
+      </Link>
     </Card>
   );
 }

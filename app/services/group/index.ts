@@ -7,28 +7,36 @@ import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { groupSchema, userGroupSchema } from "@/app/schemas/groups";
 
-const FormSchema = z.object({
-  groupName: z
-    .string()
-    .min(3, { message: "Precisa conter pelo menos 3 caracteres" }),
-});
-
 export const getGroups = async (): Promise<z.infer<typeof groupSchema>[]> => {
-  const result = await prisma.Group.findMany();
-  return result;
+  try {
+    const result = await prisma.Group.findMany();
+    return result;
+  } finally {
+    await prisma.$disconnect();
+  }
 };
 
 export const getMembersGroup = async (
   groupId: string
 ): Promise<z.infer<typeof userGroupSchema>[]> => {
-  const result = await prisma.UserGroup.findMany({
-    where: {
-      groupId,
-    },
-  });
-
-  return result;
+  try {
+    const result = await prisma.UserGroup.findMany({
+      where: {
+        groupId,
+      },
+    });
+    return result;
+  } finally {
+    await prisma.$disconnect();
+  }
 };
+
+const FormSchema = z.object({
+  groupName: z
+    .string()
+    .min(3, { message: "Precisa conter pelo menos 3 caracteres" })
+    .max(200, { message: "Número máximo de caracteres 200" }),
+});
 
 const CreateGroup = FormSchema.omit({});
 
@@ -40,6 +48,7 @@ export type State = {
 export const createGroup = async (prevState: State, formData: FormData) => {
   const emails = formData.getAll("guestsEmail[]");
   const names = formData.getAll("guestsName[]");
+
   const validatedFields = CreateGroup.safeParse({
     groupName: formData.get("groupName"),
   });
@@ -52,6 +61,7 @@ export const createGroup = async (prevState: State, formData: FormData) => {
   }
 
   const { groupName } = validatedFields.data;
+
   const guests = names?.map((nome, index) => ({
     name: nome,
     email: emails[index],
@@ -94,12 +104,24 @@ export const createGroup = async (prevState: State, formData: FormData) => {
   } catch (error) {
     console.error("Transaction error:", error);
     return {
-      message: "Database Error: Failed to Create Invoice.",
+      message: "Database Error: Failed to Create Group.",
     };
+  } finally {
+    await prisma.$disconnect();
   }
 
   revalidatePath("/grupos");
   redirect("/grupos");
+};
+
+export const sortGroup = async (id: string) => {
+  try {
+    await console.log("sorting");
+  } catch (err) {
+    console.error(err);
+  }
+
+  revalidatePath("/grupos");
 };
 
 export const deleteGroup = async (id: string) => {
@@ -132,7 +154,10 @@ export const deleteGroup = async (id: string) => {
     });
   } catch (error) {
     return { message: "Database Error: Failed to Delete Invoice." };
+  } finally {
+    await prisma.$disconnect();
   }
+
   revalidatePath("/grupos");
   redirect("/grupos");
 };
