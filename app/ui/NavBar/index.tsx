@@ -5,7 +5,7 @@ import { Navbar, NavbarBrand } from "@nextui-org/react";
 import NavLinks from "./navLinks";
 import NavBarMenu from "./NavBarMenu";
 import Image from "next/image";
-import logo from "public/assets/Icons/images/logo-secret-santa.jpg";
+import logo from "public/assets/Icons/images/logo-secret-santa.png";
 import Link from "next/link";
 // import Link from "next/link";
 

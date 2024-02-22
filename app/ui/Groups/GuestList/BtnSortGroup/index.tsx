@@ -7,7 +7,12 @@ import { useFormStatus } from "react-dom";
 const BtnSortGroup = () => {
   const { pending } = useFormStatus();
   return (
-    <Button className="self-end" color="primary" type="submit">
+    <Button
+      disabled={pending}
+      className="self-end"
+      color="primary"
+      type="submit"
+    >
       {!pending ? "Sortear" : "Sorteando..."}
     </Button>
   );

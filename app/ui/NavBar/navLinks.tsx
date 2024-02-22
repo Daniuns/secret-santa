@@ -41,7 +41,7 @@ export default function NavLinks() {
         })}
       </NavbarContent>
       <NavbarContent justify="end">
-        <Dropdown
+        {/* <Dropdown
           className="dark text-foreground bg-background border-1 border-gray-800"
           placement="bottom-end"
         >
@@ -63,7 +63,7 @@ export default function NavLinks() {
               Log Out
             </DropdownItem>
           </DropdownMenu>
-        </Dropdown>
+        </Dropdown> */}
         {/* <Avatar
           isBordered
           radius="lg"

@@ -12,7 +12,9 @@ export const ListboxWrapper = ({ children }: any) => (
 );
 
 const GuestList = () => {
+  const initialStateErrors = { name: "", email: "" };
   const [isAdding, setIsAdding] = useState(false);
+  const [errors, setErrors] = useState(initialStateErrors);
 
   const [guestToAdd, setGuestToAdd] = useState<{
     name: string;
@@ -20,18 +22,62 @@ const GuestList = () => {
   }>();
   const [guestsList, setGuestsList] = useState<any[]>([]);
 
-  const onAddGuest = () => {
-    if (
-      !guestToAdd?.name ||
-      !guestToAdd?.email ||
-      guestsList.some((g) => g.email === guestToAdd.email)
-    ) {
-      return;
-    }
+  const onAddGuest = async () => {
+    const isValid = validate();
+    if (!isValid) return;
+    console.log("isValid", isValid);
 
     setGuestsList([...guestsList, guestToAdd]);
     setIsAdding(false);
     setGuestToAdd((prevValue) => undefined);
+  };
+
+  // validação provisória.
+  const validate = () => {
+    let newErrors = { ...initialStateErrors };
+
+    if (!guestToAdd?.name) {
+      newErrors = {
+        ...newErrors,
+        name: "mínimo 3 caracteres",
+      };
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(guestToAdd?.email)) {
+        newErrors = {
+          ...newErrors,
+          email: "Esse e-mail não é válido",
+        };
+      }
+    }
+
+    if (!guestToAdd?.email) {
+      newErrors = {
+        ...newErrors,
+        email: "mínimo 3 caracteres",
+      };
+    }
+
+    if (guestsList.some((g) => g?.email === guestToAdd?.email)) {
+      newErrors = {
+        ...newErrors,
+        email: "Esse e-mail já está na lista",
+      };
+    }
+
+    if (guestsList.some((g) => g?.email === guestToAdd?.email)) {
+      newErrors = {
+        ...newErrors,
+        email: "Esse e-mail já está na lista",
+      };
+    }
+
+    console.log(newErrors);
+
+    setErrors(newErrors);
+
+    if (newErrors?.name || newErrors?.email) return false;
+    return true;
   };
 
   const removeGuest = (emailToRemove: string) => {
@@ -56,6 +102,7 @@ const GuestList = () => {
           items={guestsList}
           label="Assigned to"
           variant="flat"
+          emptyContent="Não há integrantes nesse grupo"
         >
           {(item) => (
             <ListboxItem key={item.email} textValue={item.name}>
@@ -104,12 +151,14 @@ const GuestList = () => {
             value={guestToAdd?.name}
             className="my-4"
             label="nome"
+            errorMessage={errors?.name}
           />
           <Input
             onChange={(v) => onChangeNewGuest({ email: v.target.value })}
             value={guestToAdd?.email}
             className="my-4"
             label="email"
+            errorMessage={errors?.email}
           />
           <Button
             onClick={() => setIsAdding(false)}

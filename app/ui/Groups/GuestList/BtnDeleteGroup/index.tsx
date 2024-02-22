@@ -7,7 +7,12 @@ import { useFormStatus } from "react-dom";
 const BtnDeleteGroup = () => {
   const { pending } = useFormStatus();
   return (
-    <Button className="self-end" color="danger" type="submit">
+    <Button
+      disabled={pending}
+      className="self-end"
+      color="danger"
+      type="submit"
+    >
       {!pending ? "Excluir grupo" : "Excluindo..."}
     </Button>
   );
