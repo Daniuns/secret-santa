@@ -6,8 +6,8 @@ import BtnSortGroup from "@/app/ui/Groups/GuestList/BtnSortGroup";
 
 const Page = async ({ params }: any) => {
   const { id } = params;
-  const delGroup = deleteGroup.bind(null, id);
-  const groupSorter = sortGroup.bind(null, id);
+  const delGroup = await deleteGroup.bind(null, id);
+  const groupSorter = await sortGroup.bind(null, id);
   const members = await getMembersGroup(id);
 
   return (

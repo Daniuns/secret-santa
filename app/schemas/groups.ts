@@ -12,7 +12,7 @@ export const groupSchema = z.object({
 export const userGroupSchema = z.object({
   id: z.string(),
   userEmail: z.string(),
-  userName: z.boolean(),
+  userName: z.string(),
   updatedAt: z.string(),
   deletedAt: z.string(),
 });

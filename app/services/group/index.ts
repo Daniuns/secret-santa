@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { groupSchema, userGroupSchema } from "@/app/schemas/groups";
+import emailService from "../email";
 
 export const getGroups = async (): Promise<z.infer<typeof groupSchema>[]> => {
   try {
@@ -116,9 +117,9 @@ export const createGroup = async (prevState: State, formData: FormData) => {
 
 export const sortGroup = async (id: string) => {
   try {
-    await console.log("sorting");
+    await emailService(id);
   } catch (err) {
-    console.error(err);
+    console.error("Erro ao sortear:", err);
   }
 
   revalidatePath("/grupos");
